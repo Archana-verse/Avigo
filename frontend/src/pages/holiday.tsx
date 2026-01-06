@@ -1,5 +1,6 @@
 import { MapPin, Calendar, Users } from "lucide-react";
 import { useRef, useState } from "react";
+import { ChevronDown } from "lucide-react";
 /* ================= AI STORIES ================= */
 
 import { Play } from "lucide-react";
@@ -102,8 +103,6 @@ const HolidayHero = () => {
     </section>
   );
 };
-
-/* ========================================================= */
 /* DOUBLE UP HOLIDAYS SECTION */
 const DoubleUpHolidaysSection = () => {
   return (
@@ -286,12 +285,22 @@ const allPackages = [
 
 /* ---------------- PAGE ---------------- */
 
-const HolidayPackagesSection = () => {
+const HolidayPackagesSection = ({
+  packages,
+  sort,
+  setSort,
+}: {
+  packages: any[];
+  sort: string;
+  setSort: (v: string) => void;
+}) => {
+
   const [selectedCity, setSelectedCity] = useState("Goa");
 
-  const filteredPackages = allPackages.filter(
-    (pkg) => pkg.city === selectedCity
-  );
+  const filteredPackages =
+    selectedCity === "All"
+      ? packages
+      : packages.filter((pkg) => pkg.city === selectedCity);
 
   return (
     <>
@@ -334,104 +343,320 @@ const HolidayPackagesSection = () => {
             </div>
           ))}
         </div>
-      </section> 
+      </section>
       {/* ================= AI PICKED STORIES ================= */}
-<section className="max-w-7xl mx-auto px-6 py-20">
-  <div className="text-center mb-12">
-    <h2 className="text-3xl font-bold">AI-Picked Holiday Stories</h2>
-    <p className="text-gray-500 mt-2">
-      Curated by AI based on real traveler preferences
-    </p>
-  </div>
-
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-    {aiStories.map((story, index) => (
-      <div
-        key={index}
-        className="relative rounded-3xl overflow-hidden group cursor-pointer shadow-lg"
-      >
-        {/* Image */}
-        <img
-          src={story.image}
-          alt={story.title}
-          className="w-full h-[420px] object-cover group-hover:scale-105 transition"
-        />
-
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/35" />
-
-        {/* AI Badge */}
-        <div className="absolute top-4 left-4 bg-black/80 text-white text-xs px-3 py-1 rounded-full flex items-center gap-1">
-          🤖 AI Picked
+      <section className="max-w-7xl mx-auto px-6 py-20">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold">AI-Picked Holiday Stories</h2>
+          <p className="text-gray-500 mt-2">
+            Curated by AI based on real traveler preferences
+          </p>
         </div>
 
-        {/* Play Button */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="bg-white/90 p-4 rounded-full group-hover:scale-110 transition">
-            <Play size={30} className="text-orange-500" />
-          </div>
-        </div>
-
-        {/* Text */}
-        <div className="absolute bottom-4 left-4 right-4 text-white">
-          <h3 className="font-semibold text-lg">{story.title}</h3>
-          <p className="text-sm opacity-90">{story.reason}</p>
-        </div>
-      </div>
-    ))}
-  </div>
-</section>
-      {/* ================= PACKAGES ================= */}
-
-      <section
-        id="packages-section"
-        className="max-w-7xl mx-auto px-6 pb-20"
-      >
-        <h2 className="text-3xl font-bold mb-6">
-          Best-selling Holiday Packages in {selectedCity}
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {filteredPackages.map((pkg, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {aiStories.map((story, index) => (
             <div
               key={index}
-              className="bg-white rounded-2xl shadow hover:shadow-lg transition overflow-hidden"
+              className="relative rounded-3xl overflow-hidden group cursor-pointer shadow-lg"
             >
+              {/* Image */}
               <img
-                src={pkg.image}
-                className="h-48 w-full object-cover"
-                alt={pkg.title}
+                src={story.image}
+                alt={story.title}
+                className="w-full h-[420px] object-cover group-hover:scale-105 transition"
               />
 
-              <div className="p-4">
-                <h3 className="font-semibold text-lg">{pkg.title}</h3>
-                <p className="text-sm text-gray-500">{pkg.duration}</p>
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-black/35" />
 
-                <p className="mt-3 font-bold text-orange-600">
-                  From {pkg.price} / person
-                </p>
+              {/* AI Badge */}
+              <div className="absolute top-4 left-4 bg-black/80 text-white text-xs px-3 py-1 rounded-full flex items-center gap-1">
+                🤖 AI Picked
+              </div>
 
-                <button className="mt-4 w-full bg-orange-500 text-white rounded-lg py-2 font-semibold hover:bg-orange-600 transition">
-                  View Details
-                </button>
+              {/* Play Button */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="bg-white/90 p-4 rounded-full group-hover:scale-110 transition">
+                  <Play size={30} className="text-orange-500" />
+                </div>
+              </div>
+
+              {/* Text */}
+              <div className="absolute bottom-4 left-4 right-4 text-white">
+                <h3 className="font-semibold text-lg">{story.title}</h3>
+                <p className="text-sm opacity-90">{story.reason}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
+      {/* ================= PACKAGES ================= */}
+
+      <section
+        id="packages-section"
+        className="max-w-7xl mx-auto px-6 py-20"
+      >
+        {/* ================= HEADING ================= */}
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">
+          Best-selling Holiday Packages
+        </h2>
+
+        {/* ================= SEARCH BAR ================= */}
+        <div className="bg-[#FFF5EB] rounded-3xl p-6 flex flex-col md:flex-row gap-4 items-end mb-12">
+          <div className="flex-1">
+            <label className="text-sm font-medium">Where?</label>
+            <div className="mt-2 bg-white rounded-full px-5 py-3 flex items-center gap-2">
+              <MapPin size={16} className="text-gray-400" />
+              <input
+                placeholder="Where are you going?"
+                className="outline-none text-sm w-full"
+              />
+            </div>
+          </div>
+
+          <div className="flex-1">
+            <label className="text-sm font-medium">When?</label>
+            <div className="mt-2 bg-white rounded-full px-5 py-3 flex items-center gap-2">
+              <Calendar size={16} className="text-gray-400" />
+              <span className="text-sm text-gray-700">Wed, 4 Feb</span>
+            </div>
+          </div>
+
+          <div className="flex-1">
+            <label className="text-sm font-medium">Guests</label>
+            <div className="mt-2 bg-white rounded-full px-5 py-3 flex items-center gap-2">
+              <Users size={16} className="text-gray-400" />
+              <span className="text-sm text-gray-700">
+                1 Room, 2 Adults, 0 Children
+              </span>
+            </div>
+          </div>
+
+          <button className="bg-orange-500 text-white rounded-full px-8 py-3 font-semibold hover:bg-orange-600">
+            Search
+          </button>
+        </div>
+
+        <div className="flex gap-8">
+          {/* ================= FILTER SIDEBAR ================= */}
+          <aside className="w-72 hidden lg:block">
+            <div className="space-y-8">
+              {/* City */}
+              <div>
+                <h4 className="font-semibold mb-4">City</h4>
+                {["Goa", "Manali", "Jaipur", "Kashmir", "Kerala", "Andaman"].map(
+                  (city) => (
+                    <label key={city} className="flex gap-2 text-sm mb-2">
+                      <input type="checkbox" />
+                      {city}
+                    </label>
+                  )
+                )}
+              </div>
+
+              {/* Star Rating */}
+              <div>
+                <h4 className="font-semibold mb-4">Star Rating</h4>
+                {[5, 4, 3].map((s) => (
+                  <label key={s} className="flex gap-2 text-sm mb-2">
+                    <input type="checkbox" />
+                    {"⭐".repeat(s)}
+                  </label>
+                ))}
+              </div>
+
+              {/* Duration */}
+              <div>
+                <h4 className="font-semibold mb-4">Duration (Days)</h4>
+                <label className="flex gap-2 text-sm mb-2">
+                  <input type="checkbox" /> 3–4 Days
+                </label>
+                <label className="flex gap-2 text-sm mb-2">
+                  <input type="checkbox" /> 5–7 Days
+                </label>
+              </div>
+            </div>
+          </aside>
+
+          {/* ================= RESULTS ================= */}
+          <div className="flex-1">
+            <div className="flex justify-between items-center mb-6">
+              <p className="font-semibold">
+                {packages.length} results Found
+              </p>
+
+              <select
+                onChange={(e) => setSort(e.target.value)}
+                className="border rounded-full px-4 py-2 text-sm"
+              >
+                <option value="low">Price (Low to High)</option>
+                <option value="high">Price (High to Low)</option>
+              </select>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredPackages.map((pkg, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl border overflow-hidden"
+                >
+                  <div className="relative">
+                    <img
+                      src={pkg.image}
+                      className="h-48 w-full object-cover"
+                    />
+
+                    <span className="absolute top-3 left-3 bg-white text-xs px-3 py-1 rounded-full">
+                      ⭐ Hotel
+                    </span>
+
+                    <span className="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                      {pkg.duration}
+                    </span>
+                  </div>
+
+                  <div className="p-4">
+                    <h3 className="font-semibold mb-2">{pkg.title}</h3>
+
+                    <p className="text-xs text-gray-500 mb-3">
+                      📍 {pkg.city}
+                    </p>
+
+                    <p className="font-bold text-lg mb-4">
+                      From {pkg.price}
+                      <span className="text-sm text-gray-500"> / Person</span>
+                    </p>
+
+                    <div className="flex gap-3">
+                      <button className="flex-1 border rounded-lg py-2 text-sm">
+                        Preview
+                      </button>
+                      <button className="flex-1 bg-orange-500 text-white rounded-lg py-2 text-sm">
+                        Details
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center mt-10">
+              <button className="px-8 py-3 border rounded-full text-sm">
+                Load More
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 };
+const HolidayFAQ = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
+  const faqs = [
+    {
+      q: "How do I start the booking process?",
+      a: (
+        <ul className="list-disc pl-5 space-y-2 text-gray-600">
+          <li>Go to “Best-selling Holiday Packages”.</li>
+          <li>Use filters (destination, duration, budget, etc.).</li>
+          <li>Select a package you like.</li>
+          <li>Click “Learn more” to view itinerary & inclusions.</li>
+          <li>Click “Book Online” to proceed.</li>
+        </ul>
+      ),
+    },
+    {
+      q: "What happens after I click “Book Online”?",
+      a: (
+        <ul className="list-disc pl-5 space-y-2 text-gray-600">
+          <li>Enter traveller details.</li>
+          <li>Choose payment option (partial or full).</li>
+          <li>Review cancellation and booking terms.</li>
+          <li>Get confirmation via Email & WhatsApp.</li>
+        </ul>
+      ),
+    },
+    {
+      q: "If my travel dates change after booking, what happens?",
+      a: (
+        <p className="text-gray-600">
+          If your plans change, contact our support team. Rescheduling or refunds
+          depend on airline and hotel policies.
+        </p>
+      ),
+    },
+    {
+      q: "What is the ‘Double Up Holidays’ offer?",
+      a: (
+        <p className="text-gray-600">
+          The partner travels free, or up to 2 kids under 8 can join free on
+          selected holiday packages.
+        </p>
+      ),
+    },
+  ];
 
-/* ========================================================= */
+  return (
+    <section className="max-w-6xl mx-auto px-6 py-20">
+      <h2 className="text-3xl font-bold text-gray-900 mb-10">
+        Frequently Asked Questions
+      </h2>
+
+      <div className="space-y-6">
+        {faqs.map((item, index) => (
+          <div
+            key={index}
+            className="border-b border-gray-200 pb-6 cursor-pointer"
+            onClick={() =>
+              setOpenIndex(openIndex === index ? null : index)
+            }
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900">
+                {item.q}
+              </h3>
+              <ChevronDown
+                className={`transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""
+                  }`}
+              />
+            </div>
+
+            {openIndex === index && (
+              <div className="mt-4">{item.a}</div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <button className="mt-10 border border-orange-500 text-orange-500 bg-white px-6 py-3 rounded-full font-medium hover:bg-orange-500 hover:text-white transition">
+        View All
+      </button>
+    </section>
+  );
+};
+
 /* MAIN PAGE (THIS IS WHAT ROUTER LOADS) */
 const Holiday = () => {
+  const [packages, setPackages] = useState(allPackages);
+  const [sort, setSort] = useState("low");
+
+  const sortedPackages = [...packages].sort((a, b) => {
+    const priceA = Number(a.price.replace(/[₹,]/g, ""));
+    const priceB = Number(b.price.replace(/[₹,]/g, ""));
+    return sort === "low" ? priceA - priceB : priceB - priceA;
+  });
   return (
     <>
       <HolidayHero />
       <DoubleUpHolidaysSection />
-      <HolidayPackagesSection />
+      <HolidayPackagesSection
+        packages={sortedPackages}
+        sort={sort}
+        setSort={setSort}
+      />
+      <HolidayFAQ />
     </>
   );
 };
