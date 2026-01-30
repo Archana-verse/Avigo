@@ -48,7 +48,7 @@ const TripPlannerShowcase = () => {
             <div className="flex justify-center md:justify-end md:pr-6">
               <img
                 src="/uploads/trip-planner-laptop.png"
-                alt="FLY Trip Planner"
+                alt="AVI Trip Planner"
                 className="w-full max-w-[760px]
                   drop-shadow-[0_45px_80px_rgba(0,0,0,0.75)]"
               />
@@ -65,14 +65,14 @@ const TripPlannerShowcase = () => {
               </h2>
 
               <p className="text-gray-300 text-base leading-relaxed max-w-md">
-                <span className="font-medium text-white">FLY</span> helps you
+                <span className="font-medium text-white">AVI</span> helps you
                 create personalised travel plans that fit your interests,
                 budget, and style. From dream vacations to spontaneous
                 getaways, build and map your itinerary effortlessly.
               </p>
 
               <button className="mt-10 inline-flex items-center gap-3 rounded-full bg-orange-500 px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-orange-500/30 hover:bg-orange-600 transition">
-                Plan with FLY
+                Plan with AVI
                 <Sparkles
                   size={16}
                   className="text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.9)]"

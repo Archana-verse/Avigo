@@ -119,7 +119,7 @@ export default function Plan() {
               {/* Mock Card */}
               <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md">
                 <img
-                  src="/form.png" // replace with your image
+                  src="/images/plan/form.png" // replace with your image
                   alt="AI Planner"
                   className="rounded-xl"
                 />
@@ -224,7 +224,7 @@ export default function Plan() {
               {/* Mobile UI Mock */}
               <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md">
                 <img
-                  src="/form.png" // replace with your image
+                  src="/images/plan/form.png" // replace with your image
                   alt="Trip Builder UI"
                   className="rounded-xl"
                 />
@@ -251,7 +251,7 @@ export default function Plan() {
             {/* LEFT IMAGE */}
             <div className="rounded-3xl overflow-hidden bg-[#222] h-[340px]">
               <img
-                src="/dinner.jpg"
+                src="/images/plan/dinner.jpg"
                 alt="Couple dining"
                 className="w-full h-full object-cover"
               />
@@ -317,7 +317,7 @@ export default function Plan() {
             {/* RIGHT IMAGE */}
             <div className="rounded-3xl overflow-hidden bg-[#222] h-[340px]">
               <img
-                src="/train.jpg"
+                src="/images/plan/train.jpg"
                 alt="Couple traveling"
                 className="w-full h-full object-cover"
               />

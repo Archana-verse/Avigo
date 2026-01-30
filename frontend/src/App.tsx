@@ -14,18 +14,15 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <div className="min-h-screen bg-background">
-          {/* Fixed Navbar */}
           <Navbar />
 
-          {/* Page Content */}
           <div className="pt-20">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/plan" element={<Plan />} />
               <Route path="/holiday-packages" element={<Holiday />} />
               <Route path="/flights" element={<FlightsPage />} />
-              {/* <Route path="/hotels" element={<HotelsPage />} />            */}
-             </Routes>
+            </Routes>
           </div>
         </div>
       </BrowserRouter>
