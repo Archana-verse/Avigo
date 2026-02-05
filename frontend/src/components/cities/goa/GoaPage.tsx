@@ -24,18 +24,23 @@ const GoaPage = () => {
       {/* STICKY TABS */}
       <GoaTabs variant="sticky" />
 
-      {/* MAIN CONTENT */}
+      {/* CONTENT ABOVE HOLIDAYS */}
       <div className="w-full flex justify-center bg-[#fafafa]">
         <div className="w-[1200px] px-6 pt-20 pb-32 space-y-36">
-
           <section id="offers">
             <GoaOffers />
           </section>
+        </div>
+      </div>
 
-          <section id="holidays">
-            <GoaHolidays />
-          </section>
+      {/* FULL WIDTH HOLIDAYS */}
+      <section id="holidays">
+        <GoaHolidays />
+      </section>
 
+      {/* CONTENT BELOW HOLIDAYS */}
+      <div className="w-full flex justify-center bg-[#fafafa]">
+        <div className="w-[1200px] px-6 pt-20 pb-32 space-y-36">
           <section id="things">
             <GoaThings />
           </section>
@@ -47,9 +52,9 @@ const GoaPage = () => {
           <section id="explore">
             <GoaExplore />
           </section>
-
         </div>
       </div>
+
     </div>
   );
 };

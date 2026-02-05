@@ -41,42 +41,27 @@ const goaPackages = [
 
 const GoaHolidays = () => {
   return (
-    <section className="bg-[#fff6ec] py-24">
+    <section className="w-full bg-[#fff1e6] py-24">
       <div className="max-w-[1200px] mx-auto px-6">
 
-        {/* Heading */}
-        <h2
-          className="
-            text-center
-            text-[36px] md:text-[44px]
-            font-extrabold
-            leading-tight tracking-tight
-            mb-14 text-black
-          "
-        >
+        <h2 className="text-[36px] md:text-[44px] font-extrabold text-center mb-14 text-black">
           Holiday Packages in Goa
         </h2>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {goaPackages.map((trip, i) => (
             <div
               key={i}
-              className="
-                bg-white rounded-2xl overflow-hidden
-                border border-gray-200
-                transition-shadow duration-200
-                hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)]
-              "
+              className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-[0_10px_30px_rgba(0,0,0,0.06)] h-[520x]"
+
             >
-              {/* Image */}
-              <div className="relative h-[190px]">
+              <div className="relative h-[220px]">
                 <img
                   src={trip.image}
                   alt={trip.title}
                   className="w-full h-full object-cover"
                 />
-
+x``
                 <span className="absolute top-3 left-3 bg-white text-xs px-3 py-1 rounded-full shadow-sm font-medium">
                   {trip.hotelTag}
                 </span>
@@ -84,16 +69,10 @@ const GoaHolidays = () => {
                 <span className="absolute top-3 right-3 bg-black/80 text-white text-xs px-3 py-1 rounded-full">
                   {trip.duration}
                 </span>
-
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-                  <span className="w-2 h-2 bg-white rounded-full" />
-                  <span className="w-2 h-2 bg-white/50 rounded-full" />
-                </div>
               </div>
 
-              {/* Content */}
               <div className="p-4">
-                <h3 className="text-[15px] font-semibold leading-snug mb-2">
+                <h3 className="text-[15px] font-semibold mb-2 line-clamp-2 min-h-[40px]">
                   {trip.title}
                 </h3>
 
@@ -107,54 +86,36 @@ const GoaHolidays = () => {
                 <div className="grid grid-cols-2 gap-y-2 text-xs text-gray-700 mb-4">
                   {trip.features.map((f, idx) => (
                     <div key={idx} className="flex items-center gap-1.5">
-                      <Check size={14} className="text-gray-500" />
+                      <Check size={14} className="text-gray-400" />
                       {f}
                     </div>
                   ))}
                 </div>
 
-                {/* Bottom Section */}
                 <div className="flex items-end justify-between">
                   <div>
                     <p className="text-xs text-gray-500">From</p>
-                    <p className="text-lg font-semibold text-black">
+                    <p className="text-lg font-semibold">
                       {trip.price}
                       <span className="text-xs text-gray-500"> / Person</span>
                     </p>
                   </div>
 
-                  {/* Brand chip */}
                   <div className="w-8 h-8 rounded-full border border-orange-500 flex items-center justify-center">
                     <img
                       src="/uploads/logo.png"
-                      className="w-4 h-4 object-contain"
+                      className="w-4 h-4"
                       alt="logo"
                     />
                   </div>
                 </div>
 
-                {/* Actions */}
                 <div className="flex gap-3 mt-4">
-                  <button
-                    className="
-                      flex-1 py-2 text-sm rounded-xl
-                      border border-gray-300 text-gray-600
-                      hover:border-orange-400 hover:text-orange-500
-                      hover:bg-orange-50
-                      transition-all duration-200
-                    "
-                  >
+                  <button className="flex-1 py-2 text-sm rounded-xl border border-gray-300 text-gray-600 hover:border-orange-400 hover:text-orange-500 hover:bg-orange-50 transition">
                     Preview
                   </button>
 
-                  <button
-                    className="
-                      flex-1 py-2 text-sm rounded-xl
-                      bg-orange-500 text-white
-                      hover:bg-orange-600
-                      transition-all duration-200
-                    "
-                  >
+                  <button className="flex-1 py-2 text-sm rounded-xl bg-orange-500 text-white hover:bg-orange-600 transition">
                     Details
                   </button>
                 </div>
@@ -163,21 +124,12 @@ const GoaHolidays = () => {
           ))}
         </div>
 
-        {/* CTA */}
         <div className="text-center mt-14">
-          <button
-            className="
-              inline-flex items-center gap-2
-              rounded-full border border-orange-500
-              px-6 py-3 text-sm font-medium
-              text-orange-600
-              hover:bg-orange-500 hover:text-white
-              transition-all duration-200
-            "
-          >
+          <button className="inline-flex items-center gap-2 rounded-full border border-orange-500 px-6 py-3 text-sm font-medium text-orange-600 hover:bg-orange-500 hover:text-white transition">
             All Packages →
           </button>
         </div>
+
       </div>
     </section>
   );

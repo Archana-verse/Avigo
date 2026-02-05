@@ -1,9 +1,26 @@
-import { useState } from "react";
-import { MapPin, Calendar, Users, IndianRupee, X } from "lucide-react";
+import { useState, useMemo } from "react";
+import {
+  MapPin,
+  Calendar,
+  Users,
+  IndianRupee,
+  X,
+  Palmtree,
+  Landmark,
+  Mountain,
+  Utensils,
+  Moon,
+  ShoppingBag,
+  HeartPulse,
+  Compass,
+  PawPrint,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-const travelClasses = ["Economy", "Business", "First Class"];
+const travelClasses = ["Economy", "Business", "First"];
 const companions = ["Solo", "Couple", "Family", "Friends"];
-const interests = [
+
+const interestsList = [
   "Beaches",
   "City Sightseeing",
   "Mountains",
@@ -16,28 +33,102 @@ const interests = [
   "Wildlife",
 ];
 
-export default function PlanFormModal({
-  onClose,
-}: {
-  onClose: () => void;
-}) {
-  const [selectedClass, setSelectedClass] = useState("Economy");
-  const [selectedCompanion, setSelectedCompanion] = useState("Solo");
-  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
-  const [diet, setDiet] = useState("Vegetarian");
+const interestIcons: Record<string, JSX.Element> = {
+  Beaches: <Palmtree size={16} />,
+  "City Sightseeing": <Landmark size={16} />,
+  Mountains: <Mountain size={16} />,
+  Food: <Utensils size={16} />,
+  Nightlife: <Moon size={16} />,
+  Shopping: <ShoppingBag size={16} />,
+  "Spa & Wellness": <HeartPulse size={16} />,
+  Adventure: <Compass size={16} />,
+  "Culture & Heritage": <Landmark size={16} />,
+  Wildlife: <PawPrint size={16} />,
+};
+
+type Diet = "Vegetarian" | "Non-Vegetarian";
+
+export default function PlanFormModal({ onClose }: { onClose: () => void }) {
+  const navigate = useNavigate();
+
+  const [fromCity, setFromCity] = useState<string | null>(null);
+  const [toCity, setToCity] = useState<string | null>(null);
+
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const [travelClass, setTravelClass] = useState("Economy");
+  const [budgetValue, setBudgetValue] = useState(50);
+  const [group, setGroup] = useState("Solo");
+  const [diet, setDiet] = useState<Diet>("Vegetarian");
+  const [interests, setInterests] = useState<string[]>([]);
+
+  const durationDays = useMemo(() => {
+    if (!startDate || !endDate) return null;
+    const s = new Date(startDate).getTime();
+    const e = new Date(endDate).getTime();
+    if (e <= s) return null;
+    return Math.ceil((e - s) / (1000 * 60 * 60 * 24));
+  }, [startDate, endDate]);
+
+  const budgetRange = useMemo<"Low" | "Medium" | "Flexible">(() => {
+    if (budgetValue <= 33) return "Low";
+    if (budgetValue <= 66) return "Medium";
+    return "Flexible";
+  }, [budgetValue]);
 
   const toggleInterest = (item: string) => {
-    setSelectedInterests((prev) =>
-      prev.includes(item)
-        ? prev.filter((i) => i !== item)
-        : [...prev, item]
-    );
+    setInterests((prev) => {
+      if (prev.includes(item)) return prev.filter((i) => i !== item);
+      if (prev.length >= 3) return prev;
+      return [...prev, item];
+    });
   };
+
+  const isValid = !!(startDate && endDate && durationDays && group);
+
+  const handleSubmit = async () => {
+  if (!isValid) return;
+
+  const payload = {
+    from_city: fromCity,
+    to_city: toCity,
+    start_date: startDate,
+    end_date: endDate,
+    duration_days: durationDays,
+    travel_class: travelClass,
+    budget_range: budgetRange,
+    travel_group: group,
+    interests,
+    dietary_preference: diet,
+  };
+
+  try {
+    const res = await fetch("http://localhost:8000/plan/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+
+    onClose();
+    navigate("/trip-result", { state: data });
+
+  } catch (err) {
+    console.error("API ERROR:", err);
+  }
+};
+
+
+  const sliderPercent = `${budgetValue}%`;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center px-4">
-      <div className="max-w-6xl w-full bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 relative">
-        
+      <div className="w-full max-w-3xl rounded-3xl relative glass-card max-h-[90vh] overflow-y-auto">
+
         {/* CLOSE */}
         <button
           onClick={onClose}
@@ -46,69 +137,69 @@ export default function PlanFormModal({
           <X size={18} />
         </button>
 
-        {/* LEFT IMAGE – ALIKE STYLE */}
-        <div className="relative hidden md:block">
-          <img
-            src="/travel-cover.jpg"
-            alt="Travel"
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/40 flex items-end p-8">
-            <h2 className="text-white text-3xl font-bold leading-snug">
-              Need help planning your trip?
-              <br />
-              <span className="text-orange-300">
-                Raahi’s got you ✨
-              </span>
-            </h2>
-          </div>
-        </div>
-
-        {/* RIGHT FORM */}
-        <div className="p-8 space-y-6 max-h-[90vh] overflow-y-auto">
+        <div className="p-8 space-y-6">
           <h1 className="text-2xl font-bold text-gray-800">
             Plan Your Perfect Journey
           </h1>
-          <p className="text-sm text-gray-500">
-            Tell us about your trip and let Raahi create magic 🧳
-          </p>
 
           {/* FROM / TO */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="input-box">
               <MapPin size={18} />
-              <input placeholder="From (e.g. Delhi)" />
+              <input
+                placeholder="From"
+                value={fromCity ?? ""}
+                onChange={(e) => setFromCity(e.target.value || null)}
+              />
             </div>
             <div className="input-box">
               <MapPin size={18} />
-              <input placeholder="To (e.g. Kolkata)" />
+              <input
+                placeholder="To "
+                value={toCity ?? ""}
+                onChange={(e) => setToCity(e.target.value || null)}
+              />
             </div>
           </div>
 
           {/* DATES */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="input-box">
-              <Calendar size={18} />
-              <input type="date" />
+          <div>
+            <label className="label">Travel Dates</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+              <div className="input-box">
+                <Calendar size={18} />
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                />
+              </div>
+              <div className="input-box">
+                <Calendar size={18} />
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
+              </div>
             </div>
-            <div className="input-box">
-              <Calendar size={18} />
-              <input type="date" />
-            </div>
+            {durationDays && (
+              <p className="text-xs text-gray-500 mt-1">
+                Duration: {durationDays} days
+              </p>
+            )}
           </div>
 
-          {/* CLASS */}
+          {/* TRAVEL CLASS */}
           <div>
-            <label className="label">Choose your travel class</label>
-            <div className="flex gap-2 mt-2 flex-wrap">
+            <label className="label">Travel Class</label>
+            <div className="flex gap-2 mt-2">
               {travelClasses.map((cls) => (
                 <button
                   key={cls}
-                  onClick={() => setSelectedClass(cls)}
+                  onClick={() => setTravelClass(cls)}
                   className={`chip ${
-                    selectedClass === cls
-                      ? "chip-active"
-                      : "chip-inactive"
+                    travelClass === cls ? "chip-active" : "chip-inactive"
                   }`}
                 >
                   {cls}
@@ -118,9 +209,28 @@ export default function PlanFormModal({
           </div>
 
           {/* BUDGET */}
-          <div className="input-box">
-            <IndianRupee size={18} />
-            <input placeholder="Estimated Budget (₹)" />
+          <div>
+            <label className="label">
+              Estimated Budget:{" "}
+              <span className="font-semibold">{budgetRange}</span>
+            </label>
+            <div className="flex items-center gap-3 mt-3">
+              <IndianRupee size={18} />
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={budgetValue}
+                onChange={(e) => setBudgetValue(Number(e.target.value))}
+                className="budget-slider w-full"
+                style={{ ["--slider-percent" as any]: sliderPercent }}
+              />
+            </div>
+            <div className="flex justify-between text-xs text-gray-400 mt-1">
+              <span>Low</span>
+              <span>Medium</span>
+              <span>Flexible</span>
+            </div>
           </div>
 
           {/* COMPANIONS */}
@@ -130,11 +240,9 @@ export default function PlanFormModal({
               {companions.map((c) => (
                 <button
                   key={c}
-                  onClick={() => setSelectedCompanion(c)}
+                  onClick={() => setGroup(c)}
                   className={`chip ${
-                    selectedCompanion === c
-                      ? "chip-active"
-                      : "chip-inactive"
+                    group === c ? "chip-active" : "chip-inactive"
                   }`}
                 >
                   <Users size={16} />
@@ -146,32 +254,40 @@ export default function PlanFormModal({
 
           {/* INTERESTS */}
           <div>
-            <label className="label">Your Interests</label>
+            <label className="label">
+              Your Interests <span className="text-xs"></span>
+            </label>
             <div className="flex flex-wrap gap-2 mt-2">
-              {interests.map((item) => (
-                <button
-                  key={item}
-                  onClick={() => toggleInterest(item)}
-                  className={`chip text-sm ${
-                    selectedInterests.includes(item)
-                      ? "chip-active"
-                      : "chip-inactive"
-                  }`}
-                >
-                  {item}
-                </button>
-              ))}
+              {interestsList.map((item) => {
+                const active = interests.includes(item);
+                return (
+                  <button
+                    key={item}
+                    onClick={() => toggleInterest(item)}
+                    className={`chip ${
+                      active ? "chip-active" : "chip-inactive"
+                    }`}
+                  >
+                    <span
+                      className={active ? "text-white" : "text-gray-400"}
+                    >
+                      {interestIcons[item]}
+                    </span>
+                    {item}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           {/* DIET */}
           <div>
-            <label className="label">Dietary Preference</label>
+            <label className="label">Dietary Preference (optional)</label>
             <div className="flex gap-3 mt-2">
               {["Vegetarian", "Non-Vegetarian"].map((d) => (
                 <button
                   key={d}
-                  onClick={() => setDiet(d)}
+                  onClick={() => setDiet(d as Diet)}
                   className={`chip ${
                     diet === d ? "chip-active" : "chip-inactive"
                   }`}
@@ -183,15 +299,31 @@ export default function PlanFormModal({
           </div>
 
           {/* CTA */}
-          <button className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-xl font-semibold transition">
-            Find My Perfect Trip →
+          <button
+            onClick={handleSubmit}
+            disabled={!isValid}
+            className={`w-full mt-4 py-3 rounded-full font-semibold transition ${
+              isValid
+                ? "bg-orange-500 hover:bg-orange-600 text-white"
+                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+            }`}
+          >
+            Start Planning For Free →
           </button>
         </div>
       </div>
 
-      {/* LOCAL STYLES */}
-      <style>
-        {`
+      {/* STYLES */}
+      <style>{`
+        .glass-card {
+          background: rgba(255, 255, 255, 0.92);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border: 1px solid rgba(255, 255, 255, 0.4);
+          box-shadow:
+            0 20px 40px rgba(0, 0, 0, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
         .input-box {
           display: flex;
           align-items: center;
@@ -218,20 +350,39 @@ export default function PlanFormModal({
           display: flex;
           align-items: center;
           gap: 6px;
-          transition: all 0.2s;
           font-size: 14px;
         }
         .chip-active {
-          background: #fb923c;
+          background: #f97316;
           color: white;
-          border-color: #fb923c;
+          border-color: #f97316;
         }
         .chip-inactive {
           background: white;
           color: #374151;
         }
-        `}
-      </style>
+        .budget-slider {
+          -webkit-appearance: none;
+          height: 6px;
+          border-radius: 999px;
+          background: linear-gradient(
+            to right,
+            #f97316 0%,
+            #f97316 var(--slider-percent),
+            #e5e7eb var(--slider-percent),
+            #e5e7eb 100%
+          );
+        }
+        .budget-slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          height: 18px;
+          width: 18px;
+          border-radius: 50%;
+          background: #f97316;
+          border: 3px solid white;
+          cursor: pointer;
+        }
+      `}</style>
     </div>
   );
 }
