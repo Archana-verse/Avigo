@@ -1,11 +1,9 @@
 from fastapi import FastAPI
-from routers.plan_router import router as plan_router
-
-app = FastAPI()
-
-app.include_router(plan_router)
 from fastapi.middleware.cors import CORSMiddleware
-
+from db import Base, engine
+from routers.plan_router import router as plan_router
+app = FastAPI()
+Base.metadata.create_all(bind=engine)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,3 +11,4 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(plan_router)

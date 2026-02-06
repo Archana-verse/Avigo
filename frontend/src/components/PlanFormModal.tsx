@@ -104,7 +104,7 @@ export default function PlanFormModal({ onClose }: { onClose: () => void }) {
   };
 
   try {
-    const res = await fetch("http://localhost:8000/plan/generate", {
+    const res = await fetch("http://127.0.0.1:8000/plan/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -115,7 +115,7 @@ export default function PlanFormModal({ onClose }: { onClose: () => void }) {
     const data = await res.json();
 
     onClose();
-    navigate("/trip-result", { state: data });
+    navigate(`/trip-result/${data.trip_id}`);
 
   } catch (err) {
     console.error("API ERROR:", err);
@@ -129,7 +129,7 @@ export default function PlanFormModal({ onClose }: { onClose: () => void }) {
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center px-4">
       <div className="w-full max-w-3xl rounded-3xl relative glass-card max-h-[90vh] overflow-y-auto">
 
-        {/* CLOSE */}
+
         <button
           onClick={onClose}
           className="absolute top-4 right-4 z-10 bg-white/80 p-2 rounded-full hover:bg-white"
@@ -142,7 +142,7 @@ export default function PlanFormModal({ onClose }: { onClose: () => void }) {
             Plan Your Perfect Journey
           </h1>
 
-          {/* FROM / TO */}
+     
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="input-box">
               <MapPin size={18} />
@@ -162,7 +162,6 @@ export default function PlanFormModal({ onClose }: { onClose: () => void }) {
             </div>
           </div>
 
-          {/* DATES */}
           <div>
             <label className="label">Travel Dates</label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
@@ -190,7 +189,6 @@ export default function PlanFormModal({ onClose }: { onClose: () => void }) {
             )}
           </div>
 
-          {/* TRAVEL CLASS */}
           <div>
             <label className="label">Travel Class</label>
             <div className="flex gap-2 mt-2">
@@ -208,7 +206,6 @@ export default function PlanFormModal({ onClose }: { onClose: () => void }) {
             </div>
           </div>
 
-          {/* BUDGET */}
           <div>
             <label className="label">
               Estimated Budget:{" "}
@@ -233,7 +230,7 @@ export default function PlanFormModal({ onClose }: { onClose: () => void }) {
             </div>
           </div>
 
-          {/* COMPANIONS */}
+       
           <div>
             <label className="label">Who are you traveling with?</label>
             <div className="grid grid-cols-2 gap-3 mt-2">
@@ -252,7 +249,7 @@ export default function PlanFormModal({ onClose }: { onClose: () => void }) {
             </div>
           </div>
 
-          {/* INTERESTS */}
+
           <div>
             <label className="label">
               Your Interests <span className="text-xs"></span>
@@ -280,7 +277,6 @@ export default function PlanFormModal({ onClose }: { onClose: () => void }) {
             </div>
           </div>
 
-          {/* DIET */}
           <div>
             <label className="label">Dietary Preference (optional)</label>
             <div className="flex gap-3 mt-2">
@@ -298,7 +294,7 @@ export default function PlanFormModal({ onClose }: { onClose: () => void }) {
             </div>
           </div>
 
-          {/* CTA */}
+
           <button
             onClick={handleSubmit}
             disabled={!isValid}
@@ -313,7 +309,7 @@ export default function PlanFormModal({ onClose }: { onClose: () => void }) {
         </div>
       </div>
 
-      {/* STYLES */}
+
       <style>{`
         .glass-card {
           background: rgba(255, 255, 255, 0.92);

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { IndianRupee, Plane, Users, Heart, Sparkles } from "lucide-react";
 
-
 const heroImagesHigh = [
   "https://res.cloudinary.com/ddofg7mcl/image/upload/q_auto,f_auto,w_1600,dpr_auto/v1770198647/zoshua-colah-ZOYG7ZRUIVo-unsplash_etbyzf.jpg",
   "https://res.cloudinary.com/ddofg7mcl/image/upload/q_auto,f_auto,w_1600,dpr_auto/v1770198797/pexels-sbsoneji-3581364_uyves9.jpg",
@@ -12,6 +11,7 @@ type Props = {
 };
 
 export default function TripHero({ data }: Props) {
+
   const [index, setIndex] = useState(0);
   const [typedText, setTypedText] = useState("");
 
@@ -58,21 +58,21 @@ export default function TripHero({ data }: Props) {
       bg-[rgba(255,255,255,0.05)]
       backdrop-blur-xl
       border border-white/10
-      shadow-[0_20px_80px_rgba(0,0,0,0.6)]
-      min-h-[560px]">
+      shadow-[0_20px_80px_rgba(0,0,0,0.45)]
+      min-h-[560px] pb-16">
 
-      {/* IMAGE BG */}
       <img
         src={heroImagesHigh[index]}
         alt=""
-        className="absolute inset-0 w-full h-full object-cover opacity-40"
+        className="absolute inset-0 w-full h-full object-cover opacity-50"
       />
 
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+
+      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
 
       <div className="relative z-10 h-full flex items-center justify-between px-14 py-20 text-white">
 
-        {/* LEFT */}
+  
         <div className="w-[60%]">
           <p className="flex items-center gap-2 text-orange-400 mb-5 text-sm">
             <Sparkles size={15} /> AI Generated Plan
@@ -108,7 +108,7 @@ export default function TripHero({ data }: Props) {
           </button>
         </div>
 
-        {/* RIGHT GLASS CARD */}
+      
         <div className="w-[40%] flex justify-end">
           <div className="bg-[rgba(255,255,255,0.08)] backdrop-blur-xl border border-white/10 
             rounded-3xl p-8 w-52 h-52 flex items-center justify-center shadow-xl">
@@ -139,6 +139,23 @@ export default function TripHero({ data }: Props) {
         </div>
 
       </div>
+
+      <div className="absolute bottom-0 left-0 w-full bg-white/95 backdrop-blur-xl border-t border-black/5 text-black">
+        <div className="max-w-7xl mx-auto px-14 py-4 flex items-center justify-between text-sm">
+          <div className="flex items-center gap-3 font-medium">
+            <span>{data?.from_city}</span>
+            <Plane size={14} className="text-orange-500" />
+            <span>{data?.to_city}</span>
+          </div>
+
+          <div className="flex items-center gap-6 text-neutral-500">
+            <span>{data?.duration_days} Days</span>
+            <span>{data?.travel_class}</span>
+            <span>{data?.budget_range} Budget</span>
+          </div>
+        </div>
+      </div>
+
     </section>
   );
 }

@@ -7,9 +7,6 @@ import Plan from "./pages/plan";
 import Holiday from "./pages/holiday";
 import TripResult from "./pages/TripResult";
 
-// NEW — Goa Page Import
-import GoaPage from "./components/cities/goa/GoaPage";
-
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -26,10 +23,7 @@ const App = () => {
               <Route path="/" element={<Home />} />
               <Route path="/plan" element={<Plan />} />
               <Route path="/holiday-packages" element={<Holiday />} />
-              <Route path="/trip-result" element={<TripResult />} />
-
-              {/* NEW ROUTE */}
-              <Route path="/cities/goa" element={<GoaPage />} />
+              <Route path="/trip-result/:id" element={<TripResult />} />
             </Routes>
           </div>
         </div>

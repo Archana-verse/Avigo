@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 
-/* =======================
-   Types
-======================= */
 interface Testimonial {
   name: string;
   role: string;
@@ -11,9 +8,7 @@ interface Testimonial {
   review: string;
 }
 
-/* =======================
-   Data
-======================= */
+
 const testimonials: Testimonial[] = [
   {
     name: "Ananya Sharma",
@@ -62,9 +57,7 @@ const testimonials: Testimonial[] = [
 const VISIBLE_CARDS = 3;
 const CARD_WIDTH = 360;
 
-/* =======================
-   Component
-======================= */
+
 const TestimonialsSection: React.FC = () => {
   const [index, setIndex] = useState<number>(0);
 

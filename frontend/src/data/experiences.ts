@@ -1,5 +1,3 @@
-// src/data/experiences.ts
-// Consolidated typed experiences data.
 export interface ExperienceItem {
   title: string;
   img?: string; // optional, so placeholder works
